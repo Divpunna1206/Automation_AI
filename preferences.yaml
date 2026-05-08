@@ -1,0 +1,18 @@
+target_titles:
+  - Gen AI Engineer
+  - AI First Full-Stack Engineer
+  - Backend Engineer
+  - Vibing with Gen AI
+target_locations:
+  - Remote
+  - India
+remote: true
+min_fit_score: 70
+preferred_keywords:
+  - FastAPI
+  - LLM
+  - Playwright
+  - human-in-the-loop
+excluded_keywords:
+  - unpaid
+  - commission only

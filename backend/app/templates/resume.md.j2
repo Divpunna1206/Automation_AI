@@ -1,0 +1,33 @@
+# {{ profile.name }}
+{% if profile.email %}{{ profile.email }}{% endif %}{% if profile.phone %} | {{ profile.phone }}{% endif %}{% if profile.location %} | {{ profile.location }}{% endif %}
+{% if profile.linkedin %}{{ profile.linkedin }}{% endif %}{% if profile.github %} | {{ profile.github }}{% endif %}
+
+## Target Role
+{{ job.title }} at {{ job.company }}
+
+## Summary
+{{ profile.summary }}
+
+## Relevant Skills
+{{ truthful_skills | join(", ") }}
+
+## Experience
+{% for item in experience %}
+### {{ item.title }} - {{ item.company }}
+{{ item.start }} - {{ item.end }}
+{% for highlight in item.highlights %}
+- {{ highlight }}
+{% endfor %}
+{% endfor %}
+
+## Education
+{% for item in profile.education %}
+- {{ item }}
+{% endfor %}
+
+{% if profile.certifications %}
+## Certifications
+{% for item in profile.certifications %}
+- {{ item }}
+{% endfor %}
+{% endif %}

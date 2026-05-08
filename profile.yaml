@@ -1,0 +1,48 @@
+name: Divya Candidate
+email: divya@example.com
+phone: "+91 9326345933"
+location: India
+linkedin: https://www.linkedin.com/in/divya-swamy-punna/
+github: https://github.com/Divpunna1206
+summary: Full-stack AI engineer experienced in Python, FastAPI, React, workflow automation, and production AI integrations.
+skills:
+  - Python
+  - FastAPI
+  - TypeScript
+  - React
+  - Next.js
+  - SQL
+  - SQLite
+  - PostgreSQL
+  - Playwright
+  - OpenAI
+  - LLM
+  - Docker
+experience:
+  - company: Example AI Studio
+    title: Full-Stack AI Engineer
+    start: 2023-06
+    end: Present
+    skills:
+      - Python
+      - FastAPI
+      - React
+      - OpenAI
+      - Playwright
+      - Flutter Android app development
+      - LLM integration
+      - human-in-the-loop workflow design
+      - Django
+      - PostgreSQL
+      - Docker
+      - SQL 
+      - Kubernetes
+      -                                
+    highlights:
+      - Built FastAPI services for AI-assisted workflows with human review gates.
+      - Designed React dashboards for reviewing generated content and operational status.
+      - Integrated OpenAI-compatible model providers without fabricating user data.
+education:
+  - Bachelor of Commerce, University of Mumbai, 2018-2021
+certifications:
+  - Full Stack development 
