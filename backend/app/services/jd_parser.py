@@ -29,7 +29,25 @@ KNOWN_SKILLS = {
     "celery",
     "redis",
     "graphql",
+    "machine learning",
+    "ai",
+    "workflow automation",
 }
+
+DOMAIN_KEYWORDS = {
+    "ats",
+    "recruiting",
+    "job application",
+    "human-in-the-loop",
+    "automation",
+    "saas",
+    "dashboard",
+    "analytics",
+    "api",
+}
+
+PREFERRED_MARKERS = ("preferred", "nice to have", "nice-to-have", "bonus", "plus", "good to have")
+REQUIRED_MARKERS = ("required", "must have", "must-have", "requirements", "you have", "need", "looking for")
 
 
 class JDParser:
@@ -38,8 +56,9 @@ class JDParser:
     def parse(self, payload: JobAnalyzeRequest) -> ParsedJob:
         text = payload.description.strip()
         lower = text.lower()
-        required_skills = sorted(skill for skill in KNOWN_SKILLS if skill in lower)
-        preferred_skills = self._extract_preferred_skills(lower, required_skills)
+        all_skills = sorted(skill for skill in KNOWN_SKILLS if skill in lower)
+        preferred_skills = self._extract_preferred_skills(text, all_skills)
+        required_skills = [skill for skill in all_skills if skill not in preferred_skills]
 
         return ParsedJob(
             title=payload.title,
@@ -53,6 +72,8 @@ class JDParser:
             responsibilities=self._extract_bullets(text),
             seniority=self._detect_seniority(lower),
             employment_type=self._detect_employment_type(lower),
+            tools=self._extract_tools(all_skills),
+            domain_keywords=sorted(keyword for keyword in DOMAIN_KEYWORDS if keyword in lower),
             risk_flags=self._detect_risks(lower),
         )
 
@@ -67,11 +88,37 @@ class JDParser:
         sentences = re.split(r"(?<=[.!?])\s+", text)
         return [sentence.strip() for sentence in sentences if 40 <= len(sentence.strip()) <= 220][:5]
 
-    def _extract_preferred_skills(self, lower: str, required: list[str]) -> list[str]:
-        preferred_context = "preferred" in lower or "nice to have" in lower or "bonus" in lower
-        if not preferred_context:
-            return []
-        return required[-5:]
+    def _extract_preferred_skills(self, text: str, skills: list[str]) -> list[str]:
+        preferred: set[str] = set()
+        for sentence in re.split(r"(?<=[.!?\n])\s+", text):
+            lower = sentence.lower()
+            if any(marker in lower for marker in PREFERRED_MARKERS):
+                preferred.update(skill for skill in skills if skill in lower)
+        return sorted(preferred)
+
+    def _extract_tools(self, skills: list[str]) -> list[str]:
+        tool_terms = {
+            "fastapi",
+            "django",
+            "flask",
+            "react",
+            "next.js",
+            "node.js",
+            "postgresql",
+            "sqlite",
+            "aws",
+            "azure",
+            "gcp",
+            "docker",
+            "kubernetes",
+            "playwright",
+            "openai",
+            "langchain",
+            "celery",
+            "redis",
+            "graphql",
+        }
+        return [skill for skill in skills if skill in tool_terms]
 
     def _detect_seniority(self, lower: str) -> str | None:
         for seniority in ("principal", "staff", "senior", "lead", "mid-level", "junior", "entry"):

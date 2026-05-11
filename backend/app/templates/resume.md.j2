@@ -5,10 +5,10 @@
 ## Target Role
 {{ job.title }} at {{ job.company }}
 
-## Summary
-{{ profile.summary }}
+## Professional Summary
+{{ recommended_resume_angle }} {{ profile.summary }}
 
-## Relevant Skills
+## Skills
 {{ truthful_skills | join(", ") }}
 
 ## Experience
@@ -16,6 +16,13 @@
 ### {{ item.title }} - {{ item.company }}
 {{ item.start }} - {{ item.end }}
 {% for highlight in item.highlights %}
+- {{ highlight }}
+{% endfor %}
+{% endfor %}
+
+## Relevant Projects
+{% for item in experience %}
+{% for highlight in item.highlights[:2] %}
 - {{ highlight }}
 {% endfor %}
 {% endfor %}

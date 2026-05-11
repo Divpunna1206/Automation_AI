@@ -22,6 +22,8 @@ class ParsedJob(BaseModel):
     responsibilities: list[str] = Field(default_factory=list)
     seniority: str | None = None
     employment_type: str | None = None
+    tools: list[str] = Field(default_factory=list)
+    domain_keywords: list[str] = Field(default_factory=list)
     risk_flags: list[str] = Field(default_factory=list)
     company_reputation: int | None = Field(default=None, ge=0, le=100)
 

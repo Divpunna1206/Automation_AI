@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
+from app.core.config_loader import validate_config
 from app.core.settings import get_settings
 from app.db.sqlite import init_db
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup() -> None:
+    validate_config()
     init_db(settings.database_url)
 
 

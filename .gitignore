@@ -1,11 +1,16 @@
 # Environment files
 .env
 .env.*
+backend/.env
+frontend/.env
+backend/.env.*
+frontend/.env.*
 !.env.example
 
 # Python
 venv/
 .venv/
+backend/.venv/
 __pycache__/
 *.py[cod]
 *.pyo
@@ -21,6 +26,8 @@ pip-wheel-metadata/
 logs/
 uvicorn.out.log
 uvicorn.err.log
+backend/uvicorn.*.log
+frontend/next.*.log
 
 # Database files
 *.db
@@ -28,6 +35,13 @@ uvicorn.err.log
 *.sqlite3
 data/*.db
 backend/data/*.db
+
+# Generated/private artifacts
+backend/artifacts/
+backend/artifacts/resumes/
+backend/artifacts/apply_sessions/
+*.pdf
+*.docx
 
 # OS files
 .DS_Store
@@ -39,9 +53,11 @@ Thumbs.db
 
 # Node / Frontend
 node_modules/
+frontend/node_modules/
 dist/
 build/
 .next/
+frontend/.next/
 out/
 npm-debug.log*
 yarn-debug.log*

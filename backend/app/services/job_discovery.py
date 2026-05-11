@@ -31,17 +31,32 @@ class JobSource(ABC):
 
 class RemoteOKSource(JobSource):
     name = "remoteok"
+    timeout_seconds = 10
 
     def search(self, request: JobSearchRequest) -> list[JobListing]:
-        response = httpx.get(
-            "https://remoteok.com/api",
-            headers={"User-Agent": "AgenticJobHuntPipeline/0.2"},
-            timeout=20,
-        )
-        response.raise_for_status()
-        rows = [row for row in response.json() if isinstance(row, dict) and row.get("position")]
+        try:
+            response = httpx.get(
+                "https://remoteok.com/api",
+                headers={"User-Agent": "AgenticJobHuntPipeline/0.2"},
+                timeout=self.timeout_seconds,
+            )
+            response.raise_for_status()
+            payload = response.json()
+        except httpx.TimeoutException as exc:
+            raise RuntimeError("RemoteOK request timed out.") from exc
+        except httpx.HTTPStatusError as exc:
+            raise RuntimeError(f"RemoteOK returned HTTP {exc.response.status_code}.") from exc
+        except httpx.HTTPError as exc:
+            raise RuntimeError("RemoteOK request failed.") from exc
+        except ValueError as exc:
+            raise RuntimeError("RemoteOK returned malformed JSON.") from exc
+        if not isinstance(payload, list):
+            raise RuntimeError("RemoteOK returned an unexpected response shape.")
+
+        rows = [row for row in payload if isinstance(row, dict) and row.get("position")]
         listings: list[JobListing] = []
         query_terms = request.query.lower().split()
+        max_results = min(request.limit, 50)
 
         for row in rows:
             title = str(row.get("position") or "")
@@ -60,7 +75,7 @@ class RemoteOKSource(JobSource):
                     tags=tags,
                 )
             )
-            if len(listings) >= request.limit:
+            if len(listings) >= max_results:
                 break
         return listings
 

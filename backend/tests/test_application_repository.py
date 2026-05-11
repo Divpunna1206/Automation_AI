@@ -43,3 +43,57 @@ def test_application_lifecycle_tracking(tmp_path) -> None:
     stats = repository.dashboard_stats()
     assert stats.total_jobs == 1
     assert stats.status_counts["submitted"] == 1
+
+
+def test_application_save_dedupes_by_canonical_job_url(tmp_path) -> None:
+    database_url = f"sqlite:///{tmp_path / 'applications.db'}"
+    init_db(database_url)
+    repository = ApplicationRepository(database_url)
+
+    first = repository.save(
+        ApplicationSaveRequest(
+            company="Acme AI",
+            title="AI Product Engineer",
+            job_url="https://example.com/jobs/123?utm_source=newsletter",
+            source="remoteok",
+            fit_score=82,
+        )
+    )
+    duplicate = repository.save(
+        ApplicationSaveRequest(
+            company="Acme AI",
+            title="AI Product Engineer",
+            job_url="https://example.com/jobs/123",
+            source="remoteok",
+            fit_score=90,
+        )
+    )
+
+    assert duplicate.id == first.id
+    assert repository.dashboard_stats().total_jobs == 1
+
+
+def test_application_save_dedupes_by_company_title_source_when_url_missing(tmp_path) -> None:
+    database_url = f"sqlite:///{tmp_path / 'applications.db'}"
+    init_db(database_url)
+    repository = ApplicationRepository(database_url)
+
+    first = repository.save(
+        ApplicationSaveRequest(
+            company="Acme AI",
+            title="AI Product Engineer",
+            source="manual",
+            fit_score=82,
+        )
+    )
+    duplicate = repository.save(
+        ApplicationSaveRequest(
+            company=" acme ai ",
+            title="AI   Product Engineer",
+            source="manual",
+            fit_score=90,
+        )
+    )
+
+    assert duplicate.id == first.id
+    assert repository.dashboard_stats().total_jobs == 1

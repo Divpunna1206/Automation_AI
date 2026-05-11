@@ -10,6 +10,7 @@ class ApplicationStatus(str, Enum):
     MATERIALS_GENERATED = "materials_generated"
     APPROVED = "approved"
     FORM_PREPARED = "form_prepared"
+    APPLIED = "applied"
     SUBMITTED = "submitted"
     INTERVIEW = "interview"
     REJECTED = "rejected"
@@ -23,6 +24,7 @@ STATUS_ORDER = [
     ApplicationStatus.MATERIALS_GENERATED,
     ApplicationStatus.APPROVED,
     ApplicationStatus.FORM_PREPARED,
+    ApplicationStatus.APPLIED,
     ApplicationStatus.SUBMITTED,
     ApplicationStatus.INTERVIEW,
     ApplicationStatus.REJECTED,

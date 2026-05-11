@@ -93,6 +93,11 @@ h2 {
   grid-template-columns: repeat(4, minmax(96px, 1fr));
 }
 
+.intelligenceStats {
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  margin-bottom: 18px;
+}
+
 .metric {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -128,6 +133,35 @@ h2 {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.filterGrid {
+  align-items: end;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(6, minmax(120px, 1fr)) auto;
+  margin-bottom: 16px;
+}
+
+.filterActions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.progressTrack {
+  background: #edf0f2;
+  border-radius: 999px;
+  height: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progressFill {
+  background: var(--accent);
+  height: 100%;
+  transition: width 180ms ease;
 }
 
 .sourceErrors {
@@ -228,6 +262,85 @@ textarea {
 .reviewStack {
   display: grid;
   gap: 16px;
+}
+
+.chartGrid,
+.analyticsGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.chartPanel {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.barList {
+  display: grid;
+  gap: 10px;
+}
+
+.barRow {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(92px, 0.8fr) minmax(100px, 1fr) 36px;
+}
+
+.barRow span {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.barRow strong {
+  font-size: 13px;
+  text-align: right;
+}
+
+.barTrack {
+  background: #edf0f2;
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.barFill {
+  background: var(--accent);
+  height: 100%;
+}
+
+.insightList {
+  color: var(--ink);
+  margin: 0;
+  padding-left: 18px;
+}
+
+.insightList li {
+  margin-bottom: 8px;
+}
+
+.checklist {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.checklist label {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  gap: 8px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.checklist input {
+  margin: 0;
+  width: auto;
 }
 
 .scoreRow {
@@ -365,13 +478,20 @@ textarea {
     display: block;
   }
 
-  .searchGrid {
+  .searchGrid,
+  .filterGrid {
     grid-template-columns: 1fr;
   }
 
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 18px;
+  }
+
+  .chartGrid,
+  .analyticsGrid,
+  .intelligenceStats {
+    grid-template-columns: 1fr;
   }
 
   .panel {
